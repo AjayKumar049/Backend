@@ -1,16 +1,8 @@
 package com.example.BillingSystem.service;
-
-
-import org.springframework.dao.DataAccessException;
-
-
-
 import org.springframework.stereotype.Service;
-
 import com.example.BillingSystem.exception.BillingSystemAlreadyExist;
 import com.example.BillingSystem.model.Item;
 import com.example.BillingSystem.repository.ItemRepository;
-
 import java.util.List;
 
 @Service
