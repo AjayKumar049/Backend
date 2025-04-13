@@ -1,24 +1,13 @@
 package com.example.BillingSystem.repository;
-
-
-
 import java.util.List;
-
-
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import com.example.BillingSystem.model.Item;
-
-
-
 
 @Repository
 public class ItemRepository {
-	
-	 private final JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
 
 	    public ItemRepository(JdbcTemplate jdbcTemplate) {
 	        this.jdbcTemplate = jdbcTemplate;
