@@ -1,7 +1,5 @@
 package com.example.BillingSystem.controller;
-
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.BillingSystem.model.Item;
 import com.example.BillingSystem.reponse.BillingSystemResponseBuilder;
 import com.example.BillingSystem.service.ItemService;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -26,7 +22,7 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Object> addItem(@RequestBody Item item) {
+    public ResponseEntity<Object> addItem(@Valid @RequestBody Item item) {
         return BillingSystemResponseBuilder.responseBuilder(
                 "Item added successfully",
                 HttpStatus.OK,
@@ -34,14 +30,23 @@ public class ItemController {
         );
     }
 
- 
-    
-    
-    @GetMapping("/all")
+  @GetMapping("/all")
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> items = itemService.getAllItems();
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
+
+@PutMapping("/update/{id}")
+  public ResponseEntity<Object> UpdateItem(@Valid @PathVariable int id, @RequestBody @Valid Item item) {
+      item.setItemId(id);
+      itemService.UpdateItem(item);
+
+      return BillingSystemResponseBuilder.responseBuilder(
+          "Item updated successfully",
+          HttpStatus.OK,
+          item // returning the updated item
+      );
+  }
 
 }
 
