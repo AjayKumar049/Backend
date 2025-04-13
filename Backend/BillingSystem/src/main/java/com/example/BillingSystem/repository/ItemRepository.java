@@ -84,6 +84,25 @@ public class ItemRepository {
 	                "SELECT COUNT(*) FROM items WHERE name = ?", Integer.class, name);
 	        return count != null && count > 0;
 	    }
+
+	 // Update
+	    public int update(Item item) {
+	        return jdbcTemplate.update("UPDATE items SET item_id=?, name=?, manufacturer=?, hsn=?, stock=?, gst=?, tax=?, discount=?, sellingprice=?, expirydate=? WHERE item_id=?",
+	            item.getItemId(), item.getName(), item.getManufacturer(), item.getHsn(), item.getStock(), item.getGst(),
+	                item.getTax(), item.getDiscount(), item.getSellingPrice(), item.getExpiryDate(), item.getItemId());
+	    }
+
+		
+	    public boolean existsById(int itemId) {
+	        Integer count = jdbcTemplate.queryForObject(
+	            "SELECT COUNT(*) FROM items WHERE item_id = ?", 
+	            Integer.class, 
+	            itemId
+	        );
+	        return count != null && count > 0;
+	    }
+	
+		
 		
 		
 	    }
