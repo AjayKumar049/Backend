@@ -31,14 +31,19 @@ public class ItemServiceImpl implements ItemService {
         return true; // Returning true on successful insertion
     }
 
-
-
-
-
-
     @Override
     public List<Item> getAllItems() {
         return itemRepository.findAll();
+    }
+
+    //Update logic 
+    @Override
+    public boolean UpdateItem(Item item) {
+        if (!itemRepository.existsById(item.getItemId())) {
+            throw new BillingSystemNotFoundException("Item does not exist");
+        }
+        itemRepository.update(item);
+        return true;
     }
 }
 
