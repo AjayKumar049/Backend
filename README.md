@@ -12,3 +12,9 @@ Item added Succefully
 If the user enters an existing item name, it shows: "Item already exists."
 
 ![alread](https://github.com/user-attachments/assets/ca0b208f-71e9-4ba6-b4f1-bce643bd5b4f)
+
+Giving a non-existing ID while updating results in: 'Item does not exist'.
+
+
+![InvalidI](https://github.com/user-attachments/assets/d55a906c-9cd9-464f-b96b-51035023d585)
+
