@@ -22,5 +22,9 @@ Item Updated Successfully
 
 ![Update](https://github.com/user-attachments/assets/8d46f382-c0d5-4a1c-9639-cbfb1241c506)
 
+If users skip any fields, display specific error messages for each entity field.
+For example, if the user skips the item name, it should display: "Name is required."
+
+![validatio](https://github.com/user-attachments/assets/1fb6e72a-6dfc-4b0b-bfc5-25b3aa3afea3)
 
 
