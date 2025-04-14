@@ -31,6 +31,9 @@ Item Deleted Successfully
 
 ![Delet](https://github.com/user-attachments/assets/21b49c2d-4e7b-41a5-ab3f-d72e92205949)
 
+Entering incorrect API Address
+
+![dumm](https://github.com/user-attachments/assets/a6e87066-7a9c-49a0-a3aa-4455f9e7633d)
 
 
 
