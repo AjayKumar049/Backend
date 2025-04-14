@@ -1,19 +1,11 @@
 package com.example.BillingSystem.service;
-
-
 import java.util.List;
-
-
-
 import com.example.BillingSystem.model.Item;
-
-
-
+import com.example.BillingSystem.model.Item;
 public interface ItemService {
- boolean addItem(Item item);
+ Item addItem(Item item);
+ Item UpdateItem(Item item);
  List<Item> getAllItems();
- boolean UpdateItem(Item item);
-
-
+ Item DeleteItem(Item item);
 }
 
