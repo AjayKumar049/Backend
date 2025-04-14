@@ -4,7 +4,7 @@ Testing via Postman
 
 #Output
 
-Item added Succefully
+Item added Successfully
 
 ![adde](https://github.com/user-attachments/assets/644b5a81-1e98-4bdb-b8e1-c0af0e18b95c)
 
@@ -26,5 +26,12 @@ If users skip any fields, display specific error messages for each entity field.
 For example, if the user skips the item name, it should display: "Name is required."
 
 ![validatio](https://github.com/user-attachments/assets/1fb6e72a-6dfc-4b0b-bfc5-25b3aa3afea3)
+
+Item Deleted Successfully
+
+
+
+
+
 
 
