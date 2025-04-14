@@ -29,6 +29,8 @@ For example, if the user skips the item name, it should display: "Name is requir
 
 Item Deleted Successfully
 
+![Delet](https://github.com/user-attachments/assets/21b49c2d-4e7b-41a5-ab3f-d72e92205949)
+
 
 
 
