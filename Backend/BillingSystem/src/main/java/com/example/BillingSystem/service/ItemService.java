@@ -7,5 +7,6 @@ public interface ItemService {
  Item UpdateItem(Item item);
  List<Item> getAllItems();
  Item DeleteItem(Item item);
+ Item searchItemByName(Item item);
 }
 
