@@ -155,5 +155,40 @@ public class ItemController {
                     null
             );
         }
+        
+        
+    @PostMapping("/search")
+    public ResponseEntity<Object> searchItemByName(@RequestBody Item item) {
+        try {
+            Item foundItem = itemService.searchItemByName(item);
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Item found successfully",
+                    HttpStatus.OK,
+                    foundItem
+            );
+        } catch (BillingSystemNotFoundException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        } catch (BillingSystemInternalException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Internal server error: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Unexpected error occurred: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
     }
+
+    
+    }
+
+    
 }
