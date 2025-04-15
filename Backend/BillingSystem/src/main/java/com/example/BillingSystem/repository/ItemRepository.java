@@ -1,19 +1,25 @@
 package com.example.BillingSystem.repository;
 import java.util.List;
+import java.util.Collections;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import com.example.BillingSystem.model.Item;
-@Repository
-public class ItemRepository {
 
+@Repository
+//Class Declaration
+public class ItemRepository {
+	
+	//Dependency Injection
     private final JdbcTemplate jdbcTemplate;
 
     public ItemRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    private RowMapper<Item> itemRowMapper = (rs, rowNum) -> {
+    
+    //RowMapper for converting ResultSet into Item object
+    private final RowMapper<Item> itemRowMapper = (rs, rowNum) -> {
         Item item = new Item();
         item.setItemId(rs.getInt("item_id"));
         item.setName(rs.getString("name"));
@@ -27,63 +33,94 @@ public class ItemRepository {
         item.setExpiryDate(rs.getDate("expiryDate").toLocalDate());
         return item;
     };
-
+    
+    //Create, Read, Update, Delete, and other operation are mentioned below
     // CREATE
     public int save(Item item) {
         String sql = "INSERT INTO items (name, manufacturer, hsn, stock, gst, tax, discount, sellingPrice, expiryDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
-                item.getName(),
-                item.getManufacturer(),
-                item.getHsn(),
-                item.getStock(),
-                item.getGst(),
-                item.getTax(),
-                item.getDiscount(),
-                item.getSellingPrice(),
-                item.getExpiryDate());
+        try {
+            return jdbcTemplate.update(sql,
+                    item.getName(),
+                    item.getManufacturer(),
+                    item.getHsn(),
+                    item.getStock(),
+                    item.getGst(),
+                    item.getTax(),
+                    item.getDiscount(),
+                    item.getSellingPrice(),
+                    item.getExpiryDate());
+        } catch (DataAccessException e) {
+            System.err.println("Error saving item: " + e.getMessage());
+            return 0;
+        }
     }
 
     // READ
     public List<Item> findAll() {
         String sql = "SELECT * FROM items";
-        return jdbcTemplate.query(sql, itemRowMapper);
+        try {
+            return jdbcTemplate.query(sql, itemRowMapper);
+        } catch (DataAccessException e) {
+            System.err.println("Error fetching items: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
-    // Check if an item exists by name
+    // EXISTS BY NAME
     public boolean existsByName(String name) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM items WHERE name = ?", Integer.class, name);
-        return count != null && count > 0;
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM items WHERE name = ?", Integer.class, name);
+            return count != null && count > 0;
+        } catch (DataAccessException e) {
+            System.err.println("Error checking existence by name: " + e.getMessage());
+            return false;
+        }
     }
 
     // UPDATE
     public int update(Item item) {
         String sql = "UPDATE items SET name=?, manufacturer=?, hsn=?, stock=?, gst=?, tax=?, discount=?, sellingPrice=?, expiryDate=? WHERE item_id=?";
-        return jdbcTemplate.update(sql,
-                item.getName(),
-                item.getManufacturer(),
-                item.getHsn(),
-                item.getStock(),
-                item.getGst(),
-                item.getTax(),
-                item.getDiscount(),
-                item.getSellingPrice(),
-                item.getExpiryDate(),
-                item.getItemId());
+        try {
+            return jdbcTemplate.update(sql,
+                    item.getName(),
+                    item.getManufacturer(),
+                    item.getHsn(),
+                    item.getStock(),
+                    item.getGst(),
+                    item.getTax(),
+                    item.getDiscount(),
+                    item.getSellingPrice(),
+                    item.getExpiryDate(),
+                    item.getItemId());
+        } catch (DataAccessException e) {
+            System.err.println("Error updating item: " + e.getMessage());
+            return 0;
+        }
     }
 
-    // Check if item exists by ID
+    // EXISTS BY ID
     public boolean existsById(int itemId) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM items WHERE item_id = ?",
-                Integer.class,
-                itemId);
-        return count != null && count > 0;
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM items WHERE item_id = ?",
+                    Integer.class,
+                    itemId);
+            return count != null && count > 0;
+        } catch (DataAccessException e) {
+            System.err.println("Error checking existence by ID: " + e.getMessage());
+            return false;
+        }
     }
 
     // DELETE
     public int delete(Item item) {
         String sql = "DELETE FROM items WHERE item_id=?";
-        return jdbcTemplate.update(sql, item.getItemId());
+        try {
+            return jdbcTemplate.update(sql, item.getItemId());
+        } catch (DataAccessException e) {
+            System.err.println("Error deleting item: " + e.getMessage());
+            return 0;
+        }
     }
 }
