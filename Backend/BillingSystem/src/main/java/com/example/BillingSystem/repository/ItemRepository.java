@@ -123,4 +123,23 @@ public class ItemRepository {
             return 0;
         }
     }
+
+    //Searching item through name
+    public List<Item> findByName(String name) {
+        List<Item> itemList = new ArrayList<>();
+
+        try {
+            if (name == null || name.trim().isEmpty()) {
+                return itemList; // Return empty list if input is invalid
+            }
+
+            String sql = "SELECT * FROM items WHERE TRIM(LOWER(name)) = TRIM(LOWER(?))";
+            itemList = jdbcTemplate.query(sql, itemRowMapper, name.trim());
+        } catch (DataAccessException e) {
+            System.out.println("Error while fetching students by name: " + e.getMessage());
+           
+        }
+
+        return itemList;
+    }
 }
