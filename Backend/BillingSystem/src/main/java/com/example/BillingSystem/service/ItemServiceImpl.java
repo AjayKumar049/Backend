@@ -102,4 +102,25 @@ public class ItemServiceImpl implements ItemService {
             throw new BillingSystemInternalException("Database error while deleting item: " + e.getMessage());
         }
     }
+
+    //Search Item by name
+     @Override
+    public Item searchItemByName(Item item) {
+        try {
+            if (item.getName() == null || item.getName().trim().isEmpty()) {
+                throw new BillingSystemNotFoundException("Item name must not be empty");
+            }
+
+            List<Item> itemList = itemRepository.findByName(item.getName());
+
+            if (itemList.isEmpty()) {
+                throw new BillingSystemNotFoundException("No item found with name: " + item.getName());
+            }
+
+            return itemList.get(0); // return the first matched item
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error occurred while searching item: " + e.getMessage());
+        }
+    }
+    
 }
