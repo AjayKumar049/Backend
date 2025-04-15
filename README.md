@@ -35,8 +35,9 @@ Entering incorrect API Address
 
 ![dumm](https://github.com/user-attachments/assets/a6e87066-7a9c-49a0-a3aa-4455f9e7633d)
 
+Searching Item by name
 
-
+![Screenshot2025-04-1514205](https://github.com/user-attachments/assets/1a691155-91a5-4360-b551-2ebde085e9ad)
 
 
 
