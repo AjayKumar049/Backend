@@ -136,7 +136,7 @@ public class ItemRepository {
             String sql = "SELECT * FROM items WHERE TRIM(LOWER(name)) = TRIM(LOWER(?))";
             itemList = jdbcTemplate.query(sql, itemRowMapper, name.trim());
         } catch (DataAccessException e) {
-            System.out.println("Error while fetching students by name: " + e.getMessage());
+            System.out.println("Error while fetching items by name: " + e.getMessage());
            
         }
 
