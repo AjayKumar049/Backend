@@ -75,6 +75,22 @@ public class CustomerRepository {
         }
     }
 
+	 
+// EXISTS BY GSTNumber
+    public boolean existsByGstNumber(String name) {
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM customers WHERE gstnumber = ?", Integer.class, name);
+            return count != null && count > 0;
+        } catch (DataAccessException e) {
+        	throw new BillingSystemInternalException("Error accessing DB while checking gstnumber existence: " + e.getMessage());
+            
+        }
+    }
+
+    
+    
+
     
     
 	
