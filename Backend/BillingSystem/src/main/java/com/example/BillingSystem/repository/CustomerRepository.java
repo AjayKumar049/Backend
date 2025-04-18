@@ -88,7 +88,18 @@ public class CustomerRepository {
         }
     }
 
-    
+
+     //READ
+    public List<Customer> findAll() {
+        String sql = "SELECT * FROM customers";
+        try {
+            return jdbcTemplate.query(sql, customerRowMapper);
+        } catch (DataAccessException e) {
+            System.err.println("Error fetching customers: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
     
 
     
