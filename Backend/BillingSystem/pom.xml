@@ -12,7 +12,7 @@
 	<artifactId>BillingSystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BillingSystem</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo project for RestAPI</description>
 	<url/>
 	<licenses>
 		<license/>
