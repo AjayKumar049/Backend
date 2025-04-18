@@ -100,6 +100,49 @@ public class CustomerRepository {
         }
     }
 
+//Update
+public int update(Customer customer) {
+        String sql = "UPDATE customers SET firstname=?, lastname=?, company=?, email=?, gstnumber=?, phonenumber=?, shippingaddress=?, attention=?, city=?, pincode=?, district=?, state=?, country=? WHERE customerid=?";
+
+        try {
+            return jdbcTemplate.update(sql,
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getCompany(),
+                    customer.getEmail(),
+                    customer.getGstNumber(),
+                    customer.getPhoneNumber(),
+                    customer.getShippingAddress(),
+                    customer.getAttention(),
+                    customer.getCity(),
+                    customer.getPincode(),
+                    customer.getDistrict(),
+                    customer.getState(),
+                    customer.getCountry(),
+                    customer.getCustomerId()); // Customer ID is the last parameter
+        } catch (DataAccessException e) {
+            System.err.println("Error updating item: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    // EXISTS BY ID 
+    public boolean existsById(int customerId) {
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM customers WHERE customerid = ?",
+                    Integer.class,
+                    customerId);
+            return count != null && count > 0;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Error accessing DB while checking customer existence: " + e.getMessage());
+        }
+    }
+
+    
+    
+	
+
     
 
     
