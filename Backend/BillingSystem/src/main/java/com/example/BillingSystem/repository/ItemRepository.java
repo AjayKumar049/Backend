@@ -108,8 +108,8 @@ public class ItemRepository {
                     itemId);
             return count != null && count > 0;
         } catch (DataAccessException e) {
-            System.err.println("Error checking existence by ID: " + e.getMessage());
-            return false;
+             throw new BillingSystemInternalException("Error accessing DB while checking item existence: " + e.getMessage());
+            
         }
     }
 
