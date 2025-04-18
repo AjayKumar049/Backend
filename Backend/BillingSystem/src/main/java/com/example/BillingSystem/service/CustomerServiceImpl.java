@@ -24,6 +24,10 @@ public class CustomerServiceImpl implements CustomerService {
             if (customerRepository.existsByEmail(customer.getEmail())) {
                 throw new BillingSystemAlreadyExist("Email already exists");
             }
+            //Check if the Gstnumber already exists
+            if (customerRepository.existsByGstNumber(customer.getGstNumber())) {
+                throw new BillingSystemAlreadyExist("GSTNumber already exists");
+            }
 
             // Save the customer to the database
             int save = customerRepository.save(customer);
