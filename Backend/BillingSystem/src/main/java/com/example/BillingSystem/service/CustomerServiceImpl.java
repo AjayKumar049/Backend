@@ -53,4 +53,23 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BillingSystemInternalException("Database error while fetching customers: " + e.getMessage());
         }
     }
+ @Override
+    public Customer UpdateCustomer(Customer customer) {
+        try {
+            if (!customerRepository.existsById(customer.getCustomerId())) {
+                throw new BillingSystemNotFoundException("Customer not exist");
+            }
+
+            int result = customerRepository.update(customer);
+            if (result == 0) {
+                throw new BillingSystemInternalException("Failed to update customer due to internal DB error");
+            }
+
+            return customer;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error while updating customer: " + e.getMessage());
+        }
+    }
+    
+    
 }
