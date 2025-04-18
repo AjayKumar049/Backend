@@ -81,6 +81,40 @@ public class CustomerController {
             );
         }
     }
+@PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateItem(@RequestBody Customer customer) {
+        try {
+            Customer updatedCustomer = customerService.UpdateCustomer(customer);
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Customer updated successfully",
+                    HttpStatus.OK,
+                    updatedCustomer
+            );
+        } catch (BillingSystemNotFoundException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND,
+                    null); }
+        catch (BillingSystemInternalException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Internal server error: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null); }
+            
+            
+        
+        catch (Exception ex) {
+        	return BillingSystemResponseBuilder.responseBuilder(
+        		    "We’re currently experiencing a technical issue while connecting to the system. Please try again later.",
+        		    HttpStatus.INTERNAL_SERVER_ERROR,
+        		    null
+        		);
+
+        }
+    }
+
+    
+   
 
 
 
