@@ -1,13 +1,10 @@
 package com.example.BillingSystem.repository;
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.model.Customer;
-
 @Repository
 public class CustomerRepository {
 	
@@ -61,7 +58,7 @@ public class CustomerRepository {
                     
             
         } catch (DataAccessException e) {
-            System.err.println("Error saving item: " + e.getMessage());
+            System.err.println("Error saving customers: " + e.getMessage());
             return 0;
         }
     }
@@ -73,7 +70,7 @@ public class CustomerRepository {
                     "SELECT COUNT(*) FROM customers WHERE email = ?", Integer.class, name);
             return count != null && count > 0;
         } catch (DataAccessException e) {
-        	throw new BillingSystemInternalException("Error accessing DB while checking HSN code existence: " + e.getMessage());
+        	throw new BillingSystemInternalException("Error accessing DB while checking email existence: " + e.getMessage());
             
         }
     }
