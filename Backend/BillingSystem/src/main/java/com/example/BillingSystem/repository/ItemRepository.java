@@ -112,6 +112,20 @@ public class ItemRepository {
             
         }
     }
+  
+    // EXISTS BY HSN CODE
+    public boolean existsByHsnCode(String hsnCode) {
+        try {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM items WHERE hsn = ?",
+                    Integer.class,
+                    hsnCode);
+            return count != null && count > 0;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Error accessing DB while checking HSN code existence: " + e.getMessage());
+        }
+    }
+	
 
     // DELETE
     public int delete(Item item) {
