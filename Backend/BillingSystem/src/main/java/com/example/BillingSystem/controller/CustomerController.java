@@ -59,6 +59,30 @@ public class CustomerController {
             );
         }
     }
+@GetMapping("/all")
+    public ResponseEntity<Object> getAllCustomers() {
+        try {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Customers fetched successfully",
+                    HttpStatus.OK,
+                    customerService.getAllCustomers()
+            );
+        } catch (BillingSystemInternalException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Internal server error: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Unexpected error occurred: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
+    }
+
+
 
     
     
