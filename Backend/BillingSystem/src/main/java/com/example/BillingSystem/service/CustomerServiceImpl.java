@@ -40,5 +40,17 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (DataAccessException e) {
             throw new BillingSystemInternalException("Database error while saving customer: " + e.getMessage());
         }
+    
+     @Override
+    public List<Customer> getAllCustomers() {
+        try {
+            List<Customer> customers = customerRepository.findAll();
+            if (customers.isEmpty()) {
+                throw new BillingSystemInternalException("Failed to fetch customers due to internal DB error");
+            }
+            return customers;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error while fetching customers: " + e.getMessage());
+        }
     }
 }
