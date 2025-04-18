@@ -20,13 +20,17 @@ public class ItemServiceImpl implements ItemService {
  * Adds a new item to the database if no existing item has the same name.
  *
  * @throws BillingSystemAlreadyExist if an item with the same name already exists.
- */
-    @Override
+ */ @Override
     public Item addItem(Item item) {
         try {
             // Check if the item with the same name already exists
             if (itemRepository.existsByName(item.getName())) {
                 throw new BillingSystemAlreadyExist("Item name already exists");
+            }
+
+            // Check if the item with the same HSN code already exists
+            if (itemRepository.existsByHsnCode(item.getHsn())) {
+                throw new BillingSystemAlreadyExist("HSN Code already exists");
             }
 
             // Save the item to the database
@@ -40,8 +44,8 @@ public class ItemServiceImpl implements ItemService {
             throw new BillingSystemInternalException("Database error while saving item: " + e.getMessage());
         }
     }
-
-       /**
+    
+      /**
  * Updates the given item after verifying its existence in the database.
  * 
  * @throws BillingSystemNotFoundException if the item ID does not exist.
