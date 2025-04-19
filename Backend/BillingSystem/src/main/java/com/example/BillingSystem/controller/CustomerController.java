@@ -113,6 +113,33 @@ public class CustomerController {
         }
     }
 
+   @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> DeleteCustomer(@PathVariable int id, @RequestBody @Valid Customer customer) {
+        try {
+            customer.setCustomerId(id);
+            customerService.DeleteCustomer(customer);
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Customer Deleted successfully",
+                    HttpStatus.OK,
+                    customer // returning the deleted Customer
+            );
+        } catch (BillingSystemNotFoundException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        }         catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Unexpected error occurred: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
+    }
+
+    
+
     
    
 
