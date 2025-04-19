@@ -139,6 +139,17 @@ public int update(Customer customer) {
         }
     }
 
+ // DELETE
+    public int delete(Customer customer) {
+        String sql = "DELETE FROM customers WHERE customerid=?";
+        try {
+            return jdbcTemplate.update(sql, customer.getCustomerId());
+        } catch (DataAccessException e) {
+            System.err.println("Error deleting customer: " + e.getMessage());
+            return 0;
+        }
+    }
+
     
     
 	
