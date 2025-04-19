@@ -138,14 +138,34 @@ public class CustomerController {
         }
     }
 
-    
-
-    
-   
-
-
-
-    
-    
+    @PostMapping("/search")
+    public ResponseEntity<Object> searchCustomerByName(@RequestBody Customer customer) {
+        try {
+            Customer foundCustomer = customerService.searchCustomerByName(customer);
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Customer found successfully",
+                    HttpStatus.OK,
+                    foundCustomer
+            );
+        } catch (BillingSystemNotFoundException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        } catch (BillingSystemInternalException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Internal server error: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Unexpected error occurred: " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
+    }
 
 }
