@@ -88,7 +88,26 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BillingSystemInternalException("Database error while deleting customer: " + e.getMessage());
         }
     }
+
     
+    @Override
+    public Customer searchCustomerByName(Customer customer) {
+        try {
+            if (customer.getFirstName() == null || customer.getFirstName().trim().isEmpty()) {
+                throw new BillingSystemNotFoundException("Customer name must not be empty");
+            }
+
+            List<Customer> customerList = customerRepository.findByFirstName(customer.getFirstName());
+
+            if (customerList.isEmpty()) {
+                throw new BillingSystemNotFoundException("No customer found with name: " + customer.getFirstName());
+            }
+
+            return customerList.get(0); // return the first matched item
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error occurred while searching customer: " + e.getMessage());
+        }
+    }
 
     
     
