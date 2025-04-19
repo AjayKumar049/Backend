@@ -150,14 +150,26 @@ public int update(Customer customer) {
         }
     }
 
-    
-    
-	
+//Searching Customer through name
+    public List<Customer> findByFirstName(String firstname) {
+        List<Customer> customerList = new ArrayList<>();
+
+        try {
+            if (firstname == null || firstname.trim().isEmpty()) {
+                return customerList; // Return empty list if input is invalid
+            }
+
+            String sql = "SELECT * FROM customers WHERE TRIM(LOWER(firstname)) = TRIM(LOWER(?))";
+            customerList = jdbcTemplate.query(sql, customerRowMapper, firstname.trim());
+        } catch (DataAccessException e) {
+            System.out.println("Error while fetching customers by firstname: " + e.getMessage());
+           
+        }
+
+        return customerList;
+    }
 
     
 
     
-    
-	
-
 }
