@@ -8,6 +8,9 @@ public interface CustomerService {
 	List<Customer> getAllCustomers();
 	Customer UpdateCustomer(Customer customer);
 	Customer DeleteCustomer(Customer customer);
+	Customer searchCustomerByName(Customer customer);
+	
+	
 	
 
 }
