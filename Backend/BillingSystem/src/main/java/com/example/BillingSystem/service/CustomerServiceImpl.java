@@ -70,6 +70,27 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BillingSystemInternalException("Database error while updating customer: " + e.getMessage());
         }
     }
+   
+    @Override
+    public Customer DeleteCustomer(Customer customer) {
+        try {
+            if (!customerRepository.existsById(customer.getCustomerId())) {
+                throw new BillingSystemNotFoundException("Customer does not exist");
+            }
+
+            int result = customerRepository.delete(customer);
+            if (result == 0) {
+                throw new BillingSystemInternalException("Failed to delete customer due to internal DB error");
+            }
+
+            return customer;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error while deleting customer: " + e.getMessage());
+        }
+    }
+    
+
+    
     
     
 }
