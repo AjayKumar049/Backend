@@ -2,9 +2,9 @@ package com.example.BillingSystem.dto;
 
 public class LoginDto {
 	private String email;
-    private String password;
+    	private String password;
     
-    public LoginDto() {}
+   	 public LoginDto() {}
 
 	public LoginDto(String email, String password) {
 		super();
