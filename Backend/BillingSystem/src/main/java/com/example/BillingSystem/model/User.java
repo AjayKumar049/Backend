@@ -1,41 +1,62 @@
 package com.example.BillingSystem.model;
+import java.sql.Timestamp;
 
 public class User {
-	private String userName;
-	private String email;
-	private String password;
-	
-	public User() {}
+    private int id;
+    private String userName;
+    private String email;
+    private String password;
+    private Timestamp created_at;
 
-	public User(String userName, String email, String password) {
-		super();
-		this.userName = userName;
-		this.email = email;
-		password = password;
-	}
+    
+    public User() {}
 
-	public String getUserName() {
-		return userName;
-	}
+    public User(int id, String userName, String email, String password, Timestamp created_at) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.created_at = created_at;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    
+    public int getId() {
+        return id;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setPassword(String password) {
-		password = password;
-	}
-	
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
 }
