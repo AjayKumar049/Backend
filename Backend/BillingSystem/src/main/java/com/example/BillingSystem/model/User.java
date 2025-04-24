@@ -3,7 +3,7 @@ package com.example.BillingSystem.model;
 public class User {
 	private String userName;
 	private String email;
-	private String Password;
+	private String password;
 	
 	public User() {}
 
@@ -11,7 +11,7 @@ public class User {
 		super();
 		this.userName = userName;
 		this.email = email;
-		Password = password;
+		password = password;
 	}
 
 	public String getUserName() {
@@ -31,15 +31,11 @@ public class User {
 	}
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		Password = password;
+		password = password;
 	}
 	
-	
-	
-	
-
 }
