@@ -25,7 +25,7 @@ public class AuthenticationImpl implements AuthenticationService{
             if (authenticationRepository.existsByEmail(user.getEmail())) {
                 throw new BillingSystemAlreadyExist("Email already exists");
             }
-             // Save the customer to the database
+             // Save the user details to the database
             int save = authenticationRepository.save(user);
             if (save == 0) {
                 throw new BillingSystemInternalException("Failed to signup to internal DB error");
