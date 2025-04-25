@@ -45,8 +45,8 @@ public class AuthenticationImpl implements AuthenticationService{
 	        User existingUser = authenticationRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
 	        if (existingUser == null) {
-	            // If no user found, throw an exception
-	            throw new BillingSystemInternalException("Invalid email or password.");
+	            // If no user found, throw BillingSystemNotFoundException with a custom message
+	            throw new BillingSystemNotFoundException("User not found with the provided email and password.");
 	        }
 
 	        // Successful signin, return the found user
@@ -57,10 +57,10 @@ public class AuthenticationImpl implements AuthenticationService{
 	        throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
 	    }
 	}
-	}
-
-
-	
-	
-
 }
+
+
+	
+	
+
+
