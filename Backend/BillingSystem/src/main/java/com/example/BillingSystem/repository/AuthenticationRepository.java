@@ -44,6 +44,27 @@ public class AuthenticationRepository {
 	            
 	        }
 	    }
+
+	//Signin 
+	public User findByEmailAndPassword(String email, String password) {
+	        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+	        try {
+	            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+	                User user = new User();
+	                user.setId(rs.getInt("id"));
+	                user.setUserName(rs.getString("user_name"));
+	                user.setEmail(rs.getString("email"));
+	                user.setPassword(rs.getString("password"));
+	                return user;
+	            }, email, password);
+	        } catch (EmptyResultDataAccessException e) {
+	            return null; // No matching user
+	        } catch (DataAccessException e) {
+	            throw new BillingSystemInternalException("Database error: " + e.getMessage());
+	        }
+	    
+	    }
+	
 	
 	
 
