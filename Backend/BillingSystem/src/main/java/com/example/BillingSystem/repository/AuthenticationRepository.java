@@ -27,7 +27,7 @@ public class AuthenticationRepository {
 	        user.getCreated_at());
 	        }
 	        catch (DataAccessException e) {
-	            System.err.println("Error saving customers: " + e.getMessage());
+	            System.err.println("Error while signup: " + e.getMessage());
 	            return 0;
 	        }
 	    
