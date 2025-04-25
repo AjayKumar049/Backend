@@ -18,7 +18,7 @@ public class AuthenticationImpl implements AuthenticationService{
 		this.authenticationRepository = authenticationRepository;
 	}
 	
-	@Override
+    @Override
     public User SignUp(User user) {
         try {
             // Check if the email already exists
@@ -37,4 +37,30 @@ public class AuthenticationImpl implements AuthenticationService{
             throw new BillingSystemInternalException("Database error while signup: " + e.getMessage());
         }
 
-	}}
+	//Signin
+	@Override
+	public User Signin(User user) {
+	    try {
+	        // Try to find the user with the given email and password
+	        User existingUser = authenticationRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+
+	        if (existingUser == null) {
+	            // If no user found, throw an exception
+	            throw new BillingSystemInternalException("Invalid email or password.");
+	        }
+
+	        // Successful signin, return the found user
+	        return existingUser;
+
+	    } catch (DataAccessException e) {
+	        // If there's any DB error, wrap and throw custom exception
+	        throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
+	    }
+	}
+	}
+
+
+	
+	
+
+}
