@@ -28,13 +28,13 @@ public class AuthenticationImpl implements AuthenticationService{
              // Save the customer to the database
             int save = authenticationRepository.save(user);
             if (save == 0) {
-                throw new BillingSystemInternalException("Failed to save customer due to internal DB error");
+                throw new BillingSystemInternalException("Failed to signup to internal DB error");
             }
 
             return user;
 
         } catch (DataAccessException e) {
-            throw new BillingSystemInternalException("Database error while saving customer: " + e.getMessage());
+            throw new BillingSystemInternalException("Database error while signup: " + e.getMessage());
         }
 
 	}}
