@@ -1,15 +1,21 @@
 package com.example.BillingSystem.dto;
 
-public class LoginDto {
-	private String email;
-    	private String password;
-    
-   	 public LoginDto() {}
+import java.sql.Timestamp;
 
-	public LoginDto(String email, String password) {
+public class LoginDto {
+    private String email;
+    private String password;
+    private Timestamp logintime;
+    
+    public LoginDto() {
+    	
+   }
+
+	public LoginDto(String email, String password, Timestamp logintime) {
 		super();
 		this.email = email;
 		this.password = password;
+		this.logintime = logintime;
 	}
 
 	public String getEmail() {
@@ -27,6 +33,18 @@ public class LoginDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Timestamp getLogintime() {
+		return logintime;
+	}
+
+	public void setLogintime(Timestamp logintime) {
+		this.logintime = logintime;
+	}
     
     
+    
+    
+    
+
 }
