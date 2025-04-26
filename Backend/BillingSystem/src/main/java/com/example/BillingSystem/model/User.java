@@ -1,25 +1,24 @@
 package com.example.BillingSystem.model;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class User {
     private int id;
     private String userName;
     private String email;
     private String password;
-    private Timestamp created_at;
-
+    private LocalDate createdDate; // Using LocalDate instead of java.sql.Date
     
     public User() {}
 
-    public User(int id, String userName, String email, String password, Timestamp created_at) {
+    public User(int id, String userName, String email, String password, LocalDate createdDate) {
+        super();
         this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.created_at = created_at;
+        this.createdDate = createdDate;
     }
 
-    
     public int getId() {
         return id;
     }
@@ -52,11 +51,11 @@ public class User {
         this.password = password;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 }
