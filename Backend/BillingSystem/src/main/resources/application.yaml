@@ -3,7 +3,7 @@ spring:
     name: BillingSystem
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/invoice
+    url: jdbc:postgresql://localhost:5432/dbname
     username: 
     password: 
 
@@ -14,5 +14,17 @@ spring:
     resources:
       add-mappings: false
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-email-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
-  port: 8089
+  port: 8096
