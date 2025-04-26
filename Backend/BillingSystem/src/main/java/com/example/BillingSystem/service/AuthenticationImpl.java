@@ -39,24 +39,25 @@ public class AuthenticationImpl implements AuthenticationService{
 
 	//Signin
 	@Override
-	public User Signin(User user) {
+	public LoginDto Signin(LoginDto loginDto) {
 	    try {
 	        // Try to find the user with the given email and password
-	        User existingUser = authenticationRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+	        LoginDto existingLogindto = authenticationRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword());
 
-	        if (existingUser == null) {
+	        if (existingLogindto == null) {
 	            // If no user found, throw BillingSystemNotFoundException with a custom message
 	            throw new BillingSystemNotFoundException("User not found with the provided email and password.");
 	        }
 
 	        // Successful signin, return the found user
-	        return existingUser;
+	        return existingLogindto;
 
 	    } catch (DataAccessException e) {
 	        // If there's any DB error, wrap and throw custom exception
 	        throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
 	    }
 	}
+	
 }
 
 
