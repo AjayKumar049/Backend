@@ -15,6 +15,7 @@ import com.example.BillingSystem.exception.BillingSystemAlreadyExist;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.exception.BillingSystemNotFoundException;
 import com.example.BillingSystem.model.User;
+import com.example.BillingSystem.dto.LoginDto;
 import com.example.BillingSystem.reponse.BillingSystemResponseBuilder;
 import com.example.BillingSystem.service.AuthenticationService;
 
@@ -69,16 +70,15 @@ public class AuthenticationController {
 	    }
 	    
 	  //Signin
-		// POST Method
-		    @PostMapping("/Signin")
-		    public ResponseEntity<Object> Signin(@Valid @RequestBody User user, BindingResult result) {
+	@PostMapping("/Signin")
+	public ResponseEntity<Object> Signin(@Valid @RequestBody LoginDto loginDto, BindingResult result) {
 		        try {
 		            ResponseEntity<Object> validationResponse = validationUtil.validateRequest(result);
 		            if (validationResponse != null) {
 		                return validationResponse;
 		            }
 
-		            User signIn = authenticationService.Signin(user);
+		            LoginDto signIn = authenticationService.Signin(loginDto);
 		            return BillingSystemResponseBuilder.responseBuilder(
 		                    "Signin Successful",
 		                    HttpStatus.OK,
@@ -110,6 +110,7 @@ public class AuthenticationController {
 		            );
 		        }
 		    }
+	                   
 }
 		    
 
