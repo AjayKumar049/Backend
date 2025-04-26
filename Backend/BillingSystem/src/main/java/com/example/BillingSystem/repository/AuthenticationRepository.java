@@ -49,25 +49,39 @@ public class AuthenticationRepository {
 	        }
 	    }
 
-	//Signin 
-	public User findByEmailAndPassword(String email, String password) {
-	        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+      //Signin
+      public LoginDto findByEmailAndPassword(String email, String password) {
+	        String selectSql = "SELECT * FROM signup WHERE email = ? AND password = ?";
+	        String insertSql = "INSERT INTO signin (email, password, login_time) VALUES (?, ?, CURRENT_TIMESTAMP)";
+
 	        try {
-	            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-	                User user = new User();
-	                user.setId(rs.getInt("id"));
-	                user.setUserName(rs.getString("user_name"));
-	                user.setEmail(rs.getString("email"));
-	                user.setPassword(rs.getString("password"));
-	                return user;
+	            // Check if user exists
+	            jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> {
+	                return null; // we just check if exists
 	            }, email, password);
+
+	            // Save login details into signin table
+	            jdbcTemplate.update(insertSql, email, password);
+
+	            // Prepare LoginDto to return
+	            LoginDto loginDto = new LoginDto();
+	            loginDto.setEmail(email);
+	            loginDto.setPassword(password);
+	            loginDto.setLogintime(new Timestamp(System.currentTimeMillis()));
+
+	            return loginDto;
+
 	        } catch (EmptyResultDataAccessException e) {
 	            return null; // No matching user
 	        } catch (DataAccessException e) {
 	            throw new BillingSystemInternalException("Database error: " + e.getMessage());
 	        }
-	    
 	    }
+
+	
+
+ 
+        
 	
 	
 	
