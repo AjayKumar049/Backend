@@ -25,7 +25,7 @@ CREATE TABLE forgotpassword (
     FOREIGN KEY (forgotpassword_id) REFERENCES signup(id)
 );
 
--- resetpassword table (already referred to signup.id)
+-- resetpassword table (referred to signup.id)
 CREATE TABLE resetpassword (
     resetpassword_id INT,
     token VARCHAR(250) UNIQUE,
