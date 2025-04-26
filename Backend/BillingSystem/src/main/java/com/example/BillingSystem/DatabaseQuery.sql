@@ -10,16 +10,18 @@ CREATE TABLE signup (
 -- signin table (refers to signup.id)
 CREATE TABLE signin (
     id SERIAL PRIMARY KEY,
-    signup_id INT,
+    signin_id INT,
     password VARCHAR(250),
     login_time TIMESTAMP,
-    FOREIGN KEY (signup_id) REFERENCES signup(id)
+    FOREIGN KEY (signin_id) REFERENCES signup(id)
 );
 
 -- forgotpassword table (refers to signup.id)
 CREATE TABLE forgotpassword (
     id SERIAL PRIMARY KEY,
     signup_id INT,
+    email VARCHAR(250),
+    requested_date TIMESTAMP,
     FOREIGN KEY (signup_id) REFERENCES signup(id)
 );
 
