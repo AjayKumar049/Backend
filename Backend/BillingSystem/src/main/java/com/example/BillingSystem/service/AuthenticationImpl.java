@@ -17,25 +17,46 @@ public class AuthenticationImpl implements AuthenticationService{
 		super();
 		this.authenticationRepository = authenticationRepository;
 	}
-	
-    @Override
-    public User SignUp(User user) {
-        try {
-            // Check if the email already exists
-            if (authenticationRepository.existsByEmail(user.getEmail())) {
-                throw new BillingSystemAlreadyExist("Email already exists");
-            }
-             // Save the user details to the database
-            int save = authenticationRepository.save(user);
-            if (save == 0) {
-                throw new BillingSystemInternalException("Failed to signup to internal DB error");
-            }
+	//Signup
+       @Override
+	public User SignUp(User user) {
+	    try {
+	        // Validate password first
+	        if (!isValidPassword(user.getPassword())) {
+	            throw new BillingSystemInternalException("Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, and be at least 8 characters long");
+	        }
 
-            return user;
+	        // Check if the email already exists
+	        if (authenticationRepository.existsByEmail(user.getEmail())) {
+	            throw new BillingSystemAlreadyExist("Email already exists");
+	        }
 
-        } catch (DataAccessException e) {
-            throw new BillingSystemInternalException("Database error while signup: " + e.getMessage());
+	        // Save the user details to the database
+	        int save = authenticationRepository.save(user);
+	        if (save == 0) {
+	            throw new BillingSystemInternalException("Failed to signup to internal DB error");
+	        }
+
+	        return user;
+
+	    } catch (DataAccessException e) {
+	        throw new BillingSystemInternalException("Database error while signup: " + e.getMessage());
+	    }
+	}
+    
+   //Add this private method here
+    private boolean isValidPassword(String password) {
+        if (password.length() < 8) {
+            return false;
         }
+        boolean hasUppercase = password.matches(".*[A-Z].*");
+        boolean hasLowercase = password.matches(".*[a-z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&*()-+=<>?].*");
+
+        return hasUppercase && hasLowercase && hasDigit && hasSpecial;
+    }
+
 
 	//Signin
 	@Override
@@ -57,6 +78,8 @@ public class AuthenticationImpl implements AuthenticationService{
 	        throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
 	    }
 	}
+
+	
 	
 }
 
