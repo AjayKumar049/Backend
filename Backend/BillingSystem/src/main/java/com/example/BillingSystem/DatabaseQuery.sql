@@ -11,6 +11,7 @@ CREATE TABLE signup (
 CREATE TABLE signin (
     signin_id SERIAL PRIMARY KEY,
     signup_id INT,
+    email VARCHAR(250)
     password VARCHAR(250),
     login_time TIMESTAMP,
     FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
