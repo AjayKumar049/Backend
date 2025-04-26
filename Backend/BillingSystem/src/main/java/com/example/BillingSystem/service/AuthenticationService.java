@@ -7,7 +7,7 @@ import com.example.BillingSystem.model.User;
 @Service
 public interface AuthenticationService {
 	User SignUp(User user);
-	User Signin(User user);
+	LoginDto Signin(LoginDto loginDto);
 	
 
 }
