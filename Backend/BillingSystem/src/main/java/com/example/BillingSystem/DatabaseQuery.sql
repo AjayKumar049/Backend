@@ -1,34 +1,35 @@
 -- signup table
 CREATE TABLE signup (
-    id SERIAL PRIMARY KEY,
+    signup_id SERIAL PRIMARY KEY,
     username VARCHAR(250),
     email VARCHAR(250) UNIQUE,
     password VARCHAR(250),
     created_date DATE
 );
 
--- signin table (refers to signup.id)
+-- signin table (refers to signup.signup_id)
 CREATE TABLE signin (
-    id SERIAL PRIMARY KEY,
-    signin_id INT,
+    signin_id SERIAL PRIMARY KEY,
+    signup_id INT,
     password VARCHAR(250),
     login_time TIMESTAMP,
-    FOREIGN KEY (signin_id) REFERENCES signup(id)
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
 );
 
--- forgotpassword table (refers to signup.id)
+-- forgotpassword table (refers to signup.signup_id)
 CREATE TABLE forgotpassword (
-    id SERIAL PRIMARY KEY,
-    forgotpassword_id INT,
+    forgotpassword_id SERIAL PRIMARY KEY,
+    signup_id INT,
     email VARCHAR(250),
     requested_date TIMESTAMP,
-    FOREIGN KEY (forgotpassword_id) REFERENCES signup(id)
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
 );
 
--- resetpassword table (referred to signup.id)
+-- resetpassword table (refers to signup.signup_id)
 CREATE TABLE resetpassword (
-    resetpassword_id INT,
+    resetpassword_id SERIAL PRIMARY KEY,
+    signup_id INT,
     token VARCHAR(250) UNIQUE,
     new_password VARCHAR(250),
-    FOREIGN KEY (resetpassword_id) REFERENCES signup(id)
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
 );
