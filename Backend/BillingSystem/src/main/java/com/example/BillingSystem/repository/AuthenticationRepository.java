@@ -1,15 +1,18 @@
 package com.example.BillingSystem.repository;
-
+import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
-
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
+import com.example.BillingSystem.dto.LoginDto;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.model.User;
-
 @Repository
 public class AuthenticationRepository {
 	
@@ -35,8 +38,6 @@ public class AuthenticationRepository {
 		    }
 		}
 	
-	
-	 
 	// EXISTS BY Email
 	    public boolean existsByEmail(String name) {
 	        try {
@@ -49,38 +50,42 @@ public class AuthenticationRepository {
 	        }
 	    }
 
-      //Signin
-      public LoginDto findByEmailAndPassword(String email, String password) {
-	        String selectSql = "SELECT * FROM signup WHERE email = ? AND password = ?";
+	 // findbyEmail
+	    public User findByEmailAndPassword(String email, String password) {
+	        String selectSql = "SELECT * FROM signup WHERE email = ?";
 	        String insertSql = "INSERT INTO signin (email, password, login_time) VALUES (?, ?, CURRENT_TIMESTAMP)";
 
 	        try {
-	            // Check if user exists
-	            jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> {
-	                return null; // we just check if exists
-	            }, email, password);
+	            // Fetch user by email
+	            User user = jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> {
+	                User u = new User();
+	                u.setEmail(rs.getString("email"));
+	                u.setPassword(rs.getString("password"));
+	                return u;
+	            }, email);
 
 	            // Save login details into signin table
-	            jdbcTemplate.update(insertSql, email, password);
+	            jdbcTemplate.update(insertSql, email, user.getPassword()); // Save password from db, not user input
 
-	            // Prepare LoginDto to return
-	            LoginDto loginDto = new LoginDto();
-	            loginDto.setEmail(email);
-	            loginDto.setPassword(password);
-	            loginDto.setLogintime(new Timestamp(System.currentTimeMillis()));
-
-	            return loginDto;
-
+	            return user;
+	            
 	        } catch (EmptyResultDataAccessException e) {
-	            return null; // No matching user
+	            // Return null if no user is found with the given email
+	            return null;
 	        } catch (DataAccessException e) {
 	            throw new BillingSystemInternalException("Database error: " + e.getMessage());
 	        }
 	    }
 
-	
 
- 
+
+
+		
+
+
+
+
+
         
 	
 	
