@@ -65,26 +65,35 @@ public class AuthenticationImpl implements AuthenticationService{
         return hasUppercase && hasLowercase && hasDigit && hasSpecial;
     }
 
-	//Signin
-	@Override
-	public LoginDto Signin(LoginDto loginDto) {
-	    try {
-	        // Try to find the user with the given email and password
-	        LoginDto existingLogindto = authenticationRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword());
+     //Signin
+     @Override
+    public User Signin(User user) {
+        try {
+            // Fetch the user by email
+            User existingUser = authenticationRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
-	        if (existingLogindto == null) {
-	            // If no user found, throw BillingSystemNotFoundException with a custom message
-	            throw new BillingSystemNotFoundException("User not found with the provided email and password.");
-	        }
+            // Check if user exists
+            if (existingUser == null) {
+                throw new BillingSystemNotFoundException("User not found with the provided email.");
+            }
 
-	        // Successful signin, return the found user
-	        return existingLogindto;
+            // Verify the password using passwordEncoder.matches() to compare hashed passwords
+            if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+                throw new BillingSystemNotFoundException("Invalid password.");
+            }
 
-	    } catch (DataAccessException e) {
-	        // If there's any DB error, wrap and throw custom exception
-	        throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
-	    }
-	}
+            // Successful signin, return the found user without password
+            existingUser.setPassword(null); // Never return password in DTO
+            return existingUser;
+
+        } catch (DataAccessException e) {
+            // Handle database error
+            throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
+        }
+    }
+
+ 
+  
 
 
 	
