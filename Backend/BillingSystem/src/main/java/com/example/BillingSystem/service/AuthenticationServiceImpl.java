@@ -1,10 +1,11 @@
 package com.example.BillingSystem.service;
-
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.example.BillingSystem.dto.LoginDto;
 import com.example.BillingSystem.exception.BillingSystemAlreadyExist;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
+import com.example.BillingSystem.exception.BillingSystemNotFoundException;
 import com.example.BillingSystem.model.User;
 import com.example.BillingSystem.repository.AuthenticationRepository;
 
@@ -12,18 +13,21 @@ import com.example.BillingSystem.repository.AuthenticationRepository;
 public class AuthenticationImpl implements AuthenticationService{
 	
 	private final AuthenticationRepository authenticationRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public AuthenticationImpl(AuthenticationRepository authenticationRepository) {
-		super();
-		this.authenticationRepository = authenticationRepository;
+	public AuthenticationImpl(AuthenticationRepository authenticationRepository, PasswordEncoder passwordEncoder) {
+	    this.authenticationRepository = authenticationRepository;
+	    this.passwordEncoder = passwordEncoder;
 	}
-	//Signup
-       @Override
+	
+	@Override
 	public User SignUp(User user) {
 	    try {
 	        // Validate password first
 	        if (!isValidPassword(user.getPassword())) {
-	            throw new BillingSystemInternalException("Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, and be at least 8 characters long");
+	            throw new BillingSystemInternalException(
+	                "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, and be at least 8 characters long"
+	            );
 	        }
 
 	        // Check if the email already exists
@@ -31,10 +35,14 @@ public class AuthenticationImpl implements AuthenticationService{
 	            throw new BillingSystemAlreadyExist("Email already exists");
 	        }
 
+	        // Encode the password before saving
+	        String encodedPassword = passwordEncoder.encode(user.getPassword());
+	        user.setPassword(encodedPassword);
+
 	        // Save the user details to the database
 	        int save = authenticationRepository.save(user);
 	        if (save == 0) {
-	            throw new BillingSystemInternalException("Failed to signup to internal DB error");
+	            throw new BillingSystemInternalException("Failed to signup due to internal DB error");
 	        }
 
 	        return user;
@@ -43,8 +51,8 @@ public class AuthenticationImpl implements AuthenticationService{
 	        throw new BillingSystemInternalException("Database error while signup: " + e.getMessage());
 	    }
 	}
-    
-   //Add this private method here
+
+	 //Add this private method here
     private boolean isValidPassword(String password) {
         if (password.length() < 8) {
             return false;
@@ -56,7 +64,6 @@ public class AuthenticationImpl implements AuthenticationService{
 
         return hasUppercase && hasLowercase && hasDigit && hasSpecial;
     }
-
 
 	//Signin
 	@Override
@@ -79,12 +86,8 @@ public class AuthenticationImpl implements AuthenticationService{
 	    }
 	}
 
+
+	
 	
 	
 }
-
-
-	
-	
-
-
