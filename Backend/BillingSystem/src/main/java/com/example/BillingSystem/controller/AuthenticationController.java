@@ -1,26 +1,20 @@
 package com.example.BillingSystem.controller;
-
 import org.springframework.http.HttpStatus;
-
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.BillingSystem.Utility.RequestValidationUtil;
 import com.example.BillingSystem.exception.BillingSystemAlreadyExist;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.exception.BillingSystemNotFoundException;
 import com.example.BillingSystem.model.User;
-import com.example.BillingSystem.dto.LoginDto;
+import com.example.BillingSystem.dto.SignupDto;
 import com.example.BillingSystem.reponse.BillingSystemResponseBuilder;
 import com.example.BillingSystem.service.AuthenticationService;
-
 import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -70,15 +64,15 @@ public class AuthenticationController {
 	    }
 	    
 	  //Signin
-	@PostMapping("/Signin")
-	public ResponseEntity<Object> Signin(@Valid @RequestBody LoginDto loginDto, BindingResult result) {
+	  @PostMapping("/Signin")
+          public ResponseEntity<Object> Signin(@Valid @RequestBody SignupDto signupDto, BindingResult result) {
 		        try {
 		            ResponseEntity<Object> validationResponse = validationUtil.validateRequest(result);
 		            if (validationResponse != null) {
 		                return validationResponse;
 		            }
 
-		            LoginDto signIn = authenticationService.Signin(loginDto);
+		            SignupDto signIn = authenticationService.Signin(signupDto);
 		            return BillingSystemResponseBuilder.responseBuilder(
 		                    "Signin Successful",
 		                    HttpStatus.OK,
@@ -110,6 +104,14 @@ public class AuthenticationController {
 		            );
 		        }
 		    }
+}
+
+		    
+
+		    
+
+	
+	  
 	                   
 }
 		    
