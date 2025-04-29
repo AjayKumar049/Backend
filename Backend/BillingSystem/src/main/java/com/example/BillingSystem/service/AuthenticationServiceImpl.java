@@ -2,7 +2,7 @@ package com.example.BillingSystem.service;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.BillingSystem.dto.LoginDto;
+import com.example.BillingSystem.dto.SignupDto;
 import com.example.BillingSystem.exception.BillingSystemAlreadyExist;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.exception.BillingSystemNotFoundException;
@@ -66,11 +66,11 @@ public class AuthenticationImpl implements AuthenticationService{
     }
 
      //Signin
-     @Override
-    public User Signin(User user) {
+    @Override
+    public SignupDto Signin(SignupDto signupDto) {
         try {
             // Fetch the user by email
-            User existingUser = authenticationRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+            SignupDto existingUser = authenticationRepository.findByEmailAndPassword(signupDto.getEmail(), signupDto.getPassword());
 
             // Check if user exists
             if (existingUser == null) {
@@ -78,7 +78,7 @@ public class AuthenticationImpl implements AuthenticationService{
             }
 
             // Verify the password using passwordEncoder.matches() to compare hashed passwords
-            if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            if (!passwordEncoder.matches(signupDto.getPassword(), existingUser.getPassword())) {
                 throw new BillingSystemNotFoundException("Invalid password.");
             }
 
@@ -89,11 +89,16 @@ public class AuthenticationImpl implements AuthenticationService{
         } catch (DataAccessException e) {
             // Handle database error
             throw new BillingSystemInternalException("Database error while signing in: " + e.getMessage());
+        } catch (BillingSystemNotFoundException e) {
+            // Handle user not found or invalid password
+            throw e;  // Re-throw the exception
+        } catch (Exception e) {
+            // Handle any other unexpected errors
+            throw new BillingSystemInternalException("Unexpected error: " + e.getMessage());
         }
     }
 
- 
-  
+   
 
 
 	
