@@ -10,7 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import com.example.BillingSystem.dto.LoginDto;
+import com.example.BillingSystem.dto.SignupDto;
 import com.example.BillingSystem.exception.BillingSystemInternalException;
 import com.example.BillingSystem.model.User;
 @Repository
@@ -51,24 +51,25 @@ public class AuthenticationRepository {
 	    }
 
 	 // findbyEmail
-	    public User findByEmailAndPassword(String email, String password) {
+	    public SignupDto findByEmailAndPassword(String email, String password) {
 	        String selectSql = "SELECT * FROM signup WHERE email = ?";
-	        String insertSql = "INSERT INTO signin (email, password, login_time) VALUES (?, ?, CURRENT_TIMESTAMP)";
+	        String insertSql = "INSERT INTO signin (signup_id, email, password, login_time) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 
 	        try {
 	            // Fetch user by email
-	            User user = jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> {
-	                User u = new User();
+	            SignupDto signupDto = jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> {
+	                SignupDto u = new SignupDto();
+	                u.setId(rs.getLong("signup_id"));
 	                u.setEmail(rs.getString("email"));
 	                u.setPassword(rs.getString("password"));
 	                return u;
 	            }, email);
 
 	            // Save login details into signin table
-	            jdbcTemplate.update(insertSql, email, user.getPassword()); // Save password from db, not user input
+	            jdbcTemplate.update(insertSql, signupDto.getId(), signupDto.getEmail(), signupDto.getPassword()); // Correct order of parameters
 
-	            return user;
-	            
+	            return signupDto;
+
 	        } catch (EmptyResultDataAccessException e) {
 	            // Return null if no user is found with the given email
 	            return null;
@@ -77,18 +78,5 @@ public class AuthenticationRepository {
 	        }
 	    }
 
-
-
-
-		
-
-
-
-
-
-        
-	
-	
-	
 
 }
