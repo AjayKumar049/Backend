@@ -35,7 +35,7 @@ CREATE TABLE resetpassword (
     FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
 );
 
-Customer, Item, Estimate, Invoice tables query mentioned below
+The table queries for Customer, Item, Estimate, and Invoice were mentioned below
 CREATE TABLE customer (
     id SERIAL PRIMARY KEY,
     type VARCHAR(20),  -- Business or Individual
