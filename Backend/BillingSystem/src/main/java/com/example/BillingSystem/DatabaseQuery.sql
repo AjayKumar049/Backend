@@ -54,7 +54,7 @@ CREATE TABLE address (
     address_id SERIAL PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
     attention VARCHAR(100),
-    address TEXT,
+    shipping_address TEXT,
     city VARCHAR(50),
     district VARCHAR(50),
     state VARCHAR(50),
@@ -112,9 +112,10 @@ CREATE TABLE invoice_item (
     invoice_id INTEGER NOT NULL REFERENCES invoice(invoice_id),
     item_id INTEGER NOT NULL REFERENCES item(item_id),
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    unit_price DECIMAL(10,2) NOT NULL,
+    tax_status VARCHAR(15) CHECK (tax_status IN ('Taxable', 'Non-Taxable')),
     gst DECIMAL(5,2),
     discount DECIMAL(5,2),
+    unit_price DECIMAL(10,2) NOT NULL,
     total_amount DECIMAL(12,2) NOT NULL
 );
 
