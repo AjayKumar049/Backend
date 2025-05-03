@@ -21,7 +21,7 @@ public class AuthenticationImpl implements AuthenticationService{
 	}
 	
 	@Override
-	public User SignUp(User user) {
+	public User signUp(User user) {
 	    try {
 	        // Validate password first
 	        if (!isValidPassword(user.getPassword())) {
@@ -52,7 +52,7 @@ public class AuthenticationImpl implements AuthenticationService{
 	    }
 	}
 
-	 //Add this private method here
+    //Add this private method here
     private boolean isValidPassword(String password) {
         if (password.length() < 8) {
             return false;
@@ -67,7 +67,7 @@ public class AuthenticationImpl implements AuthenticationService{
 
      //Signin
     @Override
-    public SignupDto Signin(SignupDto signupDto) {
+    public SignupDto signIn(SignupDto signupDto) {
         try {
             // Fetch the user by email
             SignupDto existingUser = authenticationRepository.findByEmailAndPassword(signupDto.getEmail(), signupDto.getPassword());
