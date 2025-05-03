@@ -36,7 +36,7 @@ public class AuthenticationController {
 	                return validationResponse;
 	            }
 
-	            User addedUser = authenticationService.SignUp(user);
+	            User addedUser = authenticationService.signUp(user);
 	            return BillingSystemResponseBuilder.responseBuilder(
 	                    "Account Created Succesfully",
 	                    HttpStatus.CREATED,
@@ -65,14 +65,14 @@ public class AuthenticationController {
 	    
 	  //Signin
 	  @PostMapping("/Signin")
-          public ResponseEntity<Object> Signin(@Valid @RequestBody SignupDto signupDto, BindingResult result) {
+          public ResponseEntity<Object> signIn(@Valid @RequestBody SignupDto signupDto, BindingResult result) {
 		        try {
 		            ResponseEntity<Object> validationResponse = validationUtil.validateRequest(result);
 		            if (validationResponse != null) {
 		                return validationResponse;
 		            }
 
-		            SignupDto signIn = authenticationService.Signin(signupDto);
+		            SignupDto signIn = authenticationService.signIn(signupDto);
 		            return BillingSystemResponseBuilder.responseBuilder(
 		                    "Signin Successful",
 		                    HttpStatus.OK,
