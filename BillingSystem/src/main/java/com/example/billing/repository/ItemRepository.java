@@ -1,5 +1,6 @@
 package com.example.billing.repository;
 import java.util.List;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import org.springframework.dao.DataAccessException;
@@ -41,7 +42,7 @@ public class ItemRepository {
     //Create, Read, Update, Delete, and other operation are mentioned below
     // CREATE
     public int save(Item item) {
-        String sql = "INSERT INTO items (name, manufacturer, hsn, stock, gst, tax, discount, sellingPrice, expiryDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO item (name, manufacturer, hsn_code, stock, gst, tax_status, discount, selling_price, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             return jdbcTemplate.update(sql,
                     item.getName(),
@@ -61,7 +62,7 @@ public class ItemRepository {
 
     // READ
     public List<Item> findAll() {
-        String sql = "SELECT * FROM items";
+        String sql = "SELECT * FROM item";
         try {
             return jdbcTemplate.query(sql, itemRowMapper);
         } catch (DataAccessException e) {
@@ -74,7 +75,7 @@ public class ItemRepository {
     public boolean existsByName(String name) {
         try {
             Integer count = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM items WHERE name = ?", Integer.class, name);
+                    "SELECT COUNT(*) FROM item WHERE name = ?", Integer.class, name);
             return count != null && count > 0;
         } catch (DataAccessException e) {
         	logger.error("Error checking exist by name", e);
@@ -84,7 +85,7 @@ public class ItemRepository {
 
     // UPDATE
     public int update(Item item) {
-        String sql = "UPDATE items SET name=?, manufacturer=?, hsn=?, stock=?, gst=?, tax=?, discount=?, sellingPrice=?, expiryDate=? WHERE item_id=?";
+        String sql = "UPDATE item SET name=?, manufacturer=?, hsn_code=?, stock=?, gst=?, tax_status=?, discount=?, selling_price=?, expiry_date=? WHERE item_id=?";
         try {
             return jdbcTemplate.update(sql,
                     item.getName(),
@@ -107,7 +108,7 @@ public class ItemRepository {
     public boolean existsById(Long itemId) {
         try {
             Integer count = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM items WHERE item_id = ?",
+                    "SELECT COUNT(*) FROM item WHERE item_id = ?",
                     Integer.class,
                     itemId);
             return count != null && count > 0;
@@ -120,7 +121,7 @@ public class ItemRepository {
     public boolean existsByHsnCode(String hsnCode) {
         try {
             Integer count = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM items WHERE hsn = ?",
+                    "SELECT COUNT(*) FROM item WHERE hsn_code = ?",
                     Integer.class,
                     hsnCode);
             return count != null && count > 0;
@@ -147,7 +148,7 @@ public class ItemRepository {
                 return itemList; // Return empty list if input is invalid
             }
 
-            String sql = "SELECT * FROM items WHERE TRIM(LOWER(name)) = TRIM(LOWER(?))";
+            String sql = "SELECT * FROM item WHERE TRIM(LOWER(name)) = TRIM(LOWER(?))";
             itemList = jdbcTemplate.query(sql, itemRowMapper, name.trim());
         } catch (DataAccessException e) {
         	logger.error("Error while fetching item by name", e);
