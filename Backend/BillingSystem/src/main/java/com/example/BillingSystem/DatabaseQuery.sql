@@ -36,81 +36,88 @@ CREATE TABLE resetpassword (
 );
 
 ##The table queries for Customer, Item, Estimate, and Invoice were mentioned below
+ -- Customer Table
 CREATE TABLE customer (
-    id SERIAL PRIMARY KEY,
-    type VARCHAR(20),  -- Business or Individual
+    customer_id SERIAL PRIMARY KEY, 
+    type VARCHAR(20) NOT NULL,         -- Business or Individual
     salutation VARCHAR(10),
-    first_name VARCHAR(50),
+    first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50),
     company_name VARCHAR(100),
-    email VARCHAR(100),
+    email VARCHAR(100) NOT NULL,
     gstin VARCHAR(15),
     phone VARCHAR(15)
 );
 
-CREATE TABLE shipping_address (
-    id SERIAL PRIMARY KEY,
-    customer_id INTEGER REFERENCES customer(id),
+-- Address Table
+CREATE TABLE address (
+    address_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
     attention VARCHAR(100),
-    country VARCHAR(50),
     address TEXT,
     city VARCHAR(50),
     district VARCHAR(50),
-    state VARCHAR(50)
+    state VARCHAR(50),
+    country VARCHAR(50)
+    );
+
+CREATE TABLE item (
+    item_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    manufacturer VARCHAR(100),
+    hsn_code VARCHAR(6) UNIQUE,
+    stock INTEGER DEFAULT 0 CHECK (stock >= 0),
+    tax_status VARCHAR(15) CHECK (tax_status IN ('Taxable', 'Non-Taxable')),
+    gst DECIMAL(5,2),
+    discount DECIMAL(5,2),
+    selling_price DECIMAL(10,2) NOT NULL,
+    expiry_date DATE
 );
 
+-- Estimate Table
 CREATE TABLE estimate (
-    id SERIAL PRIMARY KEY,
-    customer_id INTEGER REFERENCES customer(id),
-    estimate_date DATE,
+    estimate_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
+    estimate_date DATE NOT NULL,
     expiry_date DATE
 ); 
 
+-- Estimate Items Table
 CREATE TABLE estimate_item (
-    id SERIAL PRIMARY KEY,
-    estimate_id INTEGER REFERENCES estimate(id),
-    item_id INTEGER REFERENCES item(id),
-    quantity INTEGER,
-    unit_price NUMERIC(10,2),
-    gst NUMERIC(5,2),
-    discount NUMERIC(5,2),
-    total_amount NUMERIC(12,2)
+    estimate_itemid SERIAL PRIMARY KEY,
+    estimate_id INTEGER NOT NULL REFERENCES estimate(estimate_id),
+    item_id INTEGER NOT NULL REFERENCES item(item_id),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    tax_status VARCHAR(15) CHECK (tax_status IN ('Taxable', 'Non-Taxable')),
+    gst DECIMAL(5,2),
+    discount DECIMAL(5,2),
+    unit_price DECIMAL(10,2) NOT NULL,
+    total_amount DECIMAL(12,2) NOT NULL
 );
 
-
-
+-- Invoice Table
 CREATE TABLE invoice (
-    id SERIAL PRIMARY KEY,
-    customer_id INTEGER REFERENCES customer(id),
-    invoice_number VARCHAR(20),
-    payment_method VARCHAR(20),  -- Cash, UPI, Cheque, etc.
-    payment_terms VARCHAR(10),   -- Net15, Net30, etc.
+    invoice_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
+    invoice_number VARCHAR(20) NOT NULL,
+    invoice_date DATE NOT NULL,
+    payment_method VARCHAR(20),      -- Cash, UPI, Cheque, etc.
+    payment_terms VARCHAR(10),       -- Net15, Net30, etc.
     due_date DATE
 );
 
+-- Invoice Items Table
 CREATE TABLE invoice_item (
-    id SERIAL PRIMARY KEY,
-    invoice_id INTEGER REFERENCES invoice(id),
-    item_id INTEGER REFERENCES item(id),
-    quantity INTEGER,
-    unit_price NUMERIC(10,2),
-    gst NUMERIC(5,2),
-    discount NUMERIC(5,2),
-    total_amount NUMERIC(12,2)
+    invoice_itemid SERIAL PRIMARY KEY,
+    invoice_id INTEGER NOT NULL REFERENCES invoice(invoice_id),
+    item_id INTEGER NOT NULL REFERENCES item(item_id),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL,
+    gst DECIMAL(5,2),
+    discount DECIMAL(5,2),
+    total_amount DECIMAL(12,2) NOT NULL
 );
 
-
-
-
-
-
-
-
-
-
-
-
-    
 
  
 
