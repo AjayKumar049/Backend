@@ -7,7 +7,7 @@ import com.example.BillingSystem.dto.SignupDto;
 
 @Service
 public interface AuthenticationService {
-	User SignUp(User user);
-	SignupDto Signin(SignupDto signupDto);
+	User signUp(User user);
+	SignupDto signIn(SignupDto signupDto);
 
 }
