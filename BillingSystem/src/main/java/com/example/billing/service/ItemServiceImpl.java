@@ -1,19 +1,12 @@
 package com.example.billing.service;
-
 import org.springframework.dao.DataAccessException;
-
-
-
 import org.springframework.stereotype.Service;
-
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
 import com.example.billing.model.Item;
 import com.example.billing.repository.ItemRepository;
-
 import java.util.List;
-
 @Service
 public class ItemServiceImpl implements ItemService {
 
@@ -53,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
     public Item updateItem(Item item) {
         try {
             if (!itemRepository.existsById(item.getItemId())) {
-                throw new BillingSystemNotFoundException("Item does not exist");
+                throw new BillingSystemNotFoundException("Item not found for this id: " + item.getItemId());
             }
 
             int result = itemRepository.update(item);
