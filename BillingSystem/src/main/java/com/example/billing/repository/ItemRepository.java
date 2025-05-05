@@ -1,6 +1,5 @@
 package com.example.billing.repository;
 import java.util.List;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import org.springframework.dao.DataAccessException;
@@ -12,10 +11,9 @@ import com.example.billing.model.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @Repository
-//Class Declaration
 public class ItemRepository {
 	
-	//Dependency Injection
+    //Dependency Injection
     private final JdbcTemplate jdbcTemplate;
     private static final Logger logger = LoggerFactory.getLogger(ItemRepository.class);
 
@@ -29,13 +27,13 @@ public class ItemRepository {
         item.setItemId(rs.getLong("item_id"));
         item.setName(rs.getString("name"));
         item.setManufacturer(rs.getString("manufacturer"));
-        item.setHsn(rs.getString("hsn"));
+        item.setHsn(rs.getString("hsn_code"));
         item.setStock(rs.getInt("stock"));
         item.setGst(rs.getDouble("gst"));
-        item.setTax(rs.getString("tax"));
+        item.setTax(rs.getString("tax_status"));
         item.setDiscount(rs.getDouble("discount"));
-        item.setSellingPrice(rs.getDouble("sellingPrice"));
-        item.setExpiryDate(rs.getDate("expiryDate").toLocalDate());
+        item.setSellingPrice(rs.getDouble("selling_price"));
+        item.setExpiryDate(rs.getDate("expiry_date").toLocalDate());
         return item;
     };
     
@@ -129,15 +127,6 @@ public class ItemRepository {
             throw new BillingSystemInternalException("Error accessing DB while checking HSN code existence: " + e.getMessage());
         }
     }
-
-
-
-	/*
-	 * // DELETE public int delete(Item item) { String sql =
-	 * "DELETE FROM items WHERE item_id=?"; try { return jdbcTemplate.update(sql,
-	 * item.getItemId()); } catch (DataAccessException e) {
-	 * logger.error("Error while deleting item", e); return 0; } }
-	 */
     
     //Searching item through name
     public List<Item> findByName(String name) {
