@@ -147,4 +147,17 @@ public class ItemRepository {
         return itemList;
     }
 
+  // DELETE
+    public int delete(Item item) {
+        String sql = "DELETE FROM item WHERE item_id=?";
+        try {
+            return jdbcTemplate.update(sql, item.getItemId());
+        } catch (DataAccessException e) {
+        	logger.error("Error deleting item: {}", e.getMessage());
+
+
+            return 0;
+        }
+    }
+
 }
