@@ -111,8 +111,38 @@ public class ItemController {
             );
         }
     }
+     @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteItem(@PathVariable("id") Long id, @RequestBody @Valid Item item) {
+        try {
+            item.setItemId(id);
+            itemService.deleteItem(item);
+            return BillingSystemResponseBuilder.responseBuilder(
+                    "Item deleted successfully",
+                    HttpStatus.OK,
+                    item
+            );
+        } catch (BillingSystemNotFoundException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        } catch (BillingSystemInternalException ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    BillingSystemConstants.TECHNICAL_ISSUE_MESSAGE,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
+    }
 
-    @PostMapping("/search")
+     @PostMapping("/search")
     public ResponseEntity<Object> searchItemByName(@RequestBody Item item) {
         try {
             Item foundItem = itemService.searchItemByName(item);
