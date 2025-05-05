@@ -1,15 +1,10 @@
 package com.example.billing.controller;
+
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
@@ -20,6 +15,9 @@ import com.example.billing.service.ItemService;
 import com.example.billing.utility.RequestValidationUtil;
 
 import jakarta.validation.Valid;
+
+import static com.example.billing.constant.BillingSystemConstants.*;
+
 @RestController
 @RequestMapping("/items")
 public class ItemController {
@@ -61,7 +59,7 @@ public class ItemController {
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
@@ -84,7 +82,7 @@ public class ItemController {
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
@@ -113,14 +111,13 @@ public class ItemController {
                     null);
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "We’re currently experiencing a technical issue while connecting to the system. Please try again later.",
+                    TECHNICAL_ISSUE_MESSAGE,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         }
     }
 
-    
     @PostMapping("/search")
     public ResponseEntity<Object> searchItemByName(@RequestBody Item item) {
         try {
@@ -144,13 +141,10 @@ public class ItemController {
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         }
     }
-
-    
-    
 }
