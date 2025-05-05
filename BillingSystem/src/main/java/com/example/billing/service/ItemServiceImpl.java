@@ -60,7 +60,24 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+     @Override
+    public Item deleteItem(Item item) {
+        try {
+            if (!itemRepository.existsById(item.getItemId())) {
+                throw new BillingSystemNotFoundException("Item not found for this id: " + item.getItemId());
+            }
 
+            int result = itemRepository.delete(item);
+            if (result == 0) {
+                throw new BillingSystemInternalException("Failed to delete item due to internal DB error");
+            }
+
+            return item;
+        } catch (DataAccessException e) {
+            throw new BillingSystemInternalException("Database error while deleting item: " + e.getMessage());
+        }
+    }
+    
     @Override
     public List<Item> getAllItems() {
         try {
