@@ -1,24 +1,22 @@
 package com.example.billing.repository;
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.model.Customer;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class CustomerRepository {
 	
 	//Dependency Injection
     private final JdbcTemplate jdbcTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(CustomerRepository.class);
 
     public CustomerRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -67,8 +65,8 @@ public class CustomerRepository {
                     
             
         } catch (DataAccessException e) {
-            System.err.println("Error saving item: " + e.getMessage());
-            return 0;
+        	logger.error("Error saving item: {}", e);
+        	return 0;
         }
     }
     
@@ -79,7 +77,7 @@ public class CustomerRepository {
                     "SELECT COUNT(*) FROM customers WHERE email = ?", Integer.class, name);
             return count != null && count > 0;
         } catch (DataAccessException e) {
-        	throw new BillingSystemInternalException("Error accessing DB while checking HSN code existence: " + e.getMessage());
+        	throw new BillingSystemInternalException("Error accessing DB while checking  existence: " + e.getMessage());
             
         }
     }
@@ -103,7 +101,8 @@ public class CustomerRepository {
         try {
             return jdbcTemplate.query(sql, customerRowMapper);
         } catch (DataAccessException e) {
-            System.err.println("Error fetching customers: " + e.getMessage());
+        	logger.error("Error while fetching customer: {}", e.getMessage());
+
             return Collections.emptyList();
         }
     }
@@ -128,7 +127,7 @@ public class CustomerRepository {
                     customer.getCountry(),
                     customer.getCustomerId()); // Customer ID is the last parameter
         } catch (DataAccessException e) {
-            System.err.println("Error updating item: " + e.getMessage());
+        	logger.error("Error while updating customer: {}", e);
             return 0;
         }
     }
@@ -152,7 +151,7 @@ public class CustomerRepository {
         try {
             return jdbcTemplate.update(sql, customer.getCustomerId());
         } catch (DataAccessException e) {
-            System.err.println("Error deleting item: " + e.getMessage());
+        	logger.error("Error while deleting customer: {}", e);
             return 0;
         }
     }
@@ -167,14 +166,17 @@ public class CustomerRepository {
             String sql = "SELECT * FROM customers WHERE LOWER(firstname) = LOWER(?)";
             customerList = jdbcTemplate.query(sql, customerRowMapper, firstname.trim());
 
-            // Debugging
-            System.out.println("Number of customers found: " + customerList.size());
+            logger.error("Number of customers found: {}", customerList.size());
             for (Customer customer : customerList) {
-                System.out.println("Customer Name: " + customer.getFirstName());
+                logger.error("Customer Name: {}", customer.getFirstName());
             }
 
+
+            
+
         } catch (DataAccessException e) {
-            System.out.println("Error while fetching customers by firstname: " + e.getMessage());
+        	logger.error("Error while fetching customers by firstname", e);
+
         }
 
         return customerList;
