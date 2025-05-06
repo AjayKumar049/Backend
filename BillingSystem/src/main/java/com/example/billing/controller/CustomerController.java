@@ -1,7 +1,5 @@
 package com.example.billing.controller;
 import org.springframework.http.HttpStatus;
-
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
@@ -20,6 +17,8 @@ import com.example.billing.model.Customer;
 import com.example.billing.reponse.BillingSystemResponseBuilder;
 import com.example.billing.service.CustomerService;
 import com.example.billing.utility.RequestValidationUtil;
+import static com.example.billing.constant.BillingSystemConstants.*;
+
 
 import jakarta.validation.Valid;
 @RestController
@@ -56,13 +55,13 @@ public class CustomerController {
             );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
