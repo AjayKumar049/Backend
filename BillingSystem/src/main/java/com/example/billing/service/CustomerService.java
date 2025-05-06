@@ -10,8 +10,8 @@ public interface CustomerService {
 	
 	Customer addCustomer(Customer customer);
 	List<Customer> getAllCustomers();
-	Customer UpdateCustomer(Customer customer);
-	Customer DeleteCustomer(Customer customer);
+	Customer updateCustomer(Customer customer);
+	Customer deleteCustomer(Customer customer);
 	Customer searchCustomerByName(Customer customer);
 
 }
