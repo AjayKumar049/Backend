@@ -94,7 +94,7 @@ public class CustomerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateItem(@RequestBody Customer customer) {
         try {
-            Customer updatedCustomer = customerService.UpdateCustomer(customer);
+            Customer updatedCustomer = customerService.updateCustomer(customer);
             return BillingSystemResponseBuilder.responseBuilder(
                     "Customer updated successfully",
                     HttpStatus.OK,
@@ -124,7 +124,7 @@ public class CustomerController {
     public ResponseEntity<Object> DeleteCustomer(@PathVariable int id, @RequestBody @Valid Customer customer) {
         try {
             customer.setCustomerId(id);
-            customerService.DeleteCustomer(customer);
+            customerService.deleteCustomer(customer);
             return BillingSystemResponseBuilder.responseBuilder(
                     "Customer Deleted successfully",
                     HttpStatus.OK,
