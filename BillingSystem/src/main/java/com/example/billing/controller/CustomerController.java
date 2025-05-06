@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.billing.constant.BillingSystemConstants;
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
@@ -17,9 +18,6 @@ import com.example.billing.model.Customer;
 import com.example.billing.reponse.BillingSystemResponseBuilder;
 import com.example.billing.service.CustomerService;
 import com.example.billing.utility.RequestValidationUtil;
-import static com.example.billing.constant.BillingSystemConstants.*;
-
-
 import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/Customers")
@@ -92,8 +90,9 @@ public class CustomerController {
     }
     
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateItem(@RequestBody Customer customer) {
+    public ResponseEntity<Object> updateItem(@PathVariable("id") int id, Customer customer) {
         try {
+            customer.setCustomerId(id);
             Customer updatedCustomer = customerService.updateCustomer(customer);
             return BillingSystemResponseBuilder.responseBuilder(
                     "Customer updated successfully",
@@ -121,7 +120,7 @@ public class CustomerController {
         }
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> DeleteCustomer(@PathVariable int id, @RequestBody @Valid Customer customer) {
+    public ResponseEntity<Object> deleteCustomer(@PathVariable int id, @RequestBody @Valid Customer customer) {
         try {
             customer.setCustomerId(id);
             customerService.deleteCustomer(customer);
@@ -168,7 +167,7 @@ public class CustomerController {
                     null
             );
         } 
-    }  catch (BillingSystemInternalException ex) {
+     catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
                     BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -181,12 +180,5 @@ public class CustomerController {
                     null
             );
         }
-    }
-
     
-    
-
-    
-    
-
-}
+}}
