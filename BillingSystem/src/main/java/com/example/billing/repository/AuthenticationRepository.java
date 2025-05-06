@@ -1,28 +1,23 @@
 package com.example.billing.repository;
-
 import java.sql.Date;
-
-
-
 import java.time.LocalDate;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import org.springframework.stereotype.Repository;
-
 import com.example.billing.dto.SignupDto;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.model.User;
-
 @Repository
 public class AuthenticationRepository {
 	
-	 @Autowired
+	 
 	 private JdbcTemplate jdbcTemplate;
+	 private static final Logger logger = LoggerFactory.getLogger(AuthenticationRepository.class);
+
+	 
 	
 	public int save(User user) {
 		    // Set current date for createdDate (LocalDate)
@@ -38,7 +33,7 @@ public class AuthenticationRepository {
 		            user.getPassword(),
 		            Date.valueOf(user.getCreatedDate()));  // Convert LocalDate to java.sql.Date
 		    } catch (DataAccessException e) {
-		        System.err.println("Error while signup: " + e.getMessage());
+		        logger.error("Error while signup: {}", e);
 		        return 0;
 		    }
 		}
@@ -58,7 +53,7 @@ public class AuthenticationRepository {
 	    }
 
 	 // findbyEmail
-	    public SignupDto findByEmailAndPassword(String email, String password) {
+	    public SignupDto findByEmail(String email) {
 	        String selectSql = "SELECT * FROM signup WHERE email = ?";
 	        String insertSql = "INSERT INTO signin (signup_id, email, password, login_time) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 
@@ -72,8 +67,10 @@ public class AuthenticationRepository {
 	                return u;
 	            }, email);
 
-	            // Save login details into signin table
-	            jdbcTemplate.update(insertSql, signupDto.getId(), signupDto.getEmail(), signupDto.getPassword()); // Correct order of parameters
+	            // Safeguard against null (even though unlikely if query succeeds)
+	            if (signupDto != null) {
+	                jdbcTemplate.update(insertSql, signupDto.getId(), signupDto.getEmail(), signupDto.getPassword());
+	            }
 
 	            return signupDto;
 
@@ -81,7 +78,7 @@ public class AuthenticationRepository {
 	            // Return null if no user is found with the given email
 	            return null;
 	        } catch (DataAccessException e) {
-	            throw new BillingSystemInternalException("Database error: " + e.getMessage());
+	            throw new BillingSystemInternalException("Database error");
 	        }
 	    }
 
