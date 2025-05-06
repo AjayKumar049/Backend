@@ -78,13 +78,13 @@ public class CustomerController {
             );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
@@ -105,24 +105,21 @@ public class CustomerController {
                     ex.getMessage(),
                     HttpStatus.NOT_FOUND,
                     null); }
-        catch (BillingSystemInternalException ex) {
+       
+    catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    null); }
-            
-            
-        
-        catch (Exception ex) {
-        	return BillingSystemResponseBuilder.responseBuilder(
-        		    "We’re currently experiencing a technical issue while connecting to the system. Please try again later.",
-        		    HttpStatus.INTERNAL_SERVER_ERROR,
-        		    null
-        		);
-
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    BillingSystemConstants.TECHNICAL_ISSUE_MESSAGE,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
         }
     }
-    
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> DeleteCustomer(@PathVariable int id, @RequestBody @Valid Customer customer) {
         try {
@@ -139,15 +136,22 @@ public class CustomerController {
                     HttpStatus.NOT_FOUND,
                     null
             );
-        }         catch (Exception ex) {
+        }        
+    catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        } catch (Exception ex) {
+            return BillingSystemResponseBuilder.responseBuilder(
+                    BillingSystemConstants.TECHNICAL_ISSUE_MESSAGE,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         }
     }
-    
+	
     @PostMapping("/search")
     public ResponseEntity<Object> searchCustomerByName(@RequestBody Customer customer) {
         try {
@@ -163,15 +167,16 @@ public class CustomerController {
                     HttpStatus.NOT_FOUND,
                     null
             );
-        } catch (BillingSystemInternalException ex) {
+        } 
+    }  catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Unexpected error occurred: " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
