@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Estimate {
 	
-		private int estimateId;
+	    private int estimateId;
 	    private String estimateNumber;
 	    private int customerId;
 	    private LocalDate estimateDate;
