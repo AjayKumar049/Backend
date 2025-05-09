@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: BillingSystem
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/invoice
+    username: postgres
+    password: ab$cL#454
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  web:
+    resources:
+      add-mappings: false
+
+ 
+
+server:
+  port: 8098
