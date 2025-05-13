@@ -36,7 +36,7 @@ CREATE TABLE resetpassword (
 );
 
 ##The table queries for Customer, Item, Estimate, and Invoice were mentioned below
- -- Customer Table
+-- Customer Table
 CREATE TABLE customer (
     customer_id SERIAL PRIMARY KEY, 
     type VARCHAR(20) NOT NULL,         -- Business or Individual
@@ -59,11 +59,14 @@ CREATE TABLE address (
     district VARCHAR(50),
     state VARCHAR(50),
     country VARCHAR(50)
-    );
+);
 
+-- Item Table (Corrected)
 CREATE TABLE item (
     item_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    dosage VARCHAR(100) NOT NULL,
+    medicine_type VARCHAR(50) NOT NULL CHECK (medicine_type IN ('Tablet', 'Tonic', 'Liquid', 'Cream', 'Oil', 'Powder', 'Syrup')),
     manufacturer VARCHAR(100),
     hsn_code VARCHAR(6) UNIQUE,
     stock INTEGER DEFAULT 0 CHECK (stock >= 0),
