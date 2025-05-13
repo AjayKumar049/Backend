@@ -65,7 +65,7 @@ CREATE TABLE address (
 CREATE TABLE item (
     item_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    dosage VARCHAR(100) NOT NULL,
+    dosage VARCHAR(100) NOT NULL, --500mg 
     medicine_type VARCHAR(50) NOT NULL CHECK (medicine_type IN ('Tablet', 'Tonic', 'Liquid', 'Cream', 'Oil', 'Powder', 'Syrup')),
     manufacturer VARCHAR(100),
     hsn_code VARCHAR(6) UNIQUE,
