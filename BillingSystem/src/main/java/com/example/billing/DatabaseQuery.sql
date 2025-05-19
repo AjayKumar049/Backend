@@ -81,6 +81,7 @@ CREATE TABLE item (
 CREATE TABLE estimate (
     estimate_id SERIAL PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
+    salesperson VARCHAR(100),
     estimate_date DATE NOT NULL,
     expiry_date DATE
 ); 
