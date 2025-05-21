@@ -3,6 +3,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.example.billing.constant.BillingSystemConstants;
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
@@ -11,7 +12,7 @@ import com.example.billing.reponse.BillingSystemResponseBuilder;
 import com.example.billing.service.ItemService;
 import com.example.billing.utility.RequestValidationUtil;
 import jakarta.validation.Valid;
-import static com.example.billing.constant.BillingSystemConstants.*;
+
 @RestController
 @RequestMapping("/items")
 public class ItemController {
@@ -47,13 +48,13 @@ public class ItemController {
             );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
@@ -70,13 +71,13 @@ public class ItemController {
             );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
@@ -86,7 +87,7 @@ public class ItemController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateItem(@PathVariable("id") Long id, @RequestBody Item item) {
         try {
-            item.setItemId(id); // Ensure the ID from the URL is set in the item object
+            item.setItemId(id);
             Item updatedItem = itemService.updateItem(item);
             return BillingSystemResponseBuilder.responseBuilder(
                     "Item updated successfully",
@@ -97,21 +98,24 @@ public class ItemController {
             return BillingSystemResponseBuilder.responseBuilder(
                     ex.getMessage(),
                     HttpStatus.NOT_FOUND,
-                    null);
+                    null
+            );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    null);
+                    null
+            );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    TECHNICAL_ISSUE_MESSAGE,
+                    BillingSystemConstants.TECHNICAL_ISSUE_MESSAGE,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         }
     }
-     @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteItem(@PathVariable("id") Long id, @RequestBody @Valid Item item) {
         try {
             item.setItemId(id);
@@ -142,7 +146,7 @@ public class ItemController {
         }
     }
 
-     @PostMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<Object> searchItemByName(@RequestBody Item item) {
         try {
             Item foundItem = itemService.searchItemByName(item);
@@ -159,13 +163,13 @@ public class ItemController {
             );
         } catch (BillingSystemInternalException ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    "Internal server error: " + ex.getMessage(),
+                    BillingSystemConstants.INTERNAL_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
         } catch (Exception ex) {
             return BillingSystemResponseBuilder.responseBuilder(
-                    UNEXPECTED_ERROR + ": " + ex.getMessage(),
+                    BillingSystemConstants.UNEXPECTED_ERROR + ": " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     null
             );
