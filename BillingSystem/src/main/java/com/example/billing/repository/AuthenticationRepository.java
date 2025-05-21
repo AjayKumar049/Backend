@@ -1,24 +1,15 @@
 package com.example.billing.repository;
 import java.sql.Date;
-
-
-
 import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import org.springframework.stereotype.Repository;
-
 import com.example.billing.dto.SignupDto;
 import com.example.billing.exception.BillingSystemInternalException;
-import com.example.billing.model.User;
-
+import com.example.billing.model.Users;
 @Repository
 public class AuthenticationRepository {
 	
@@ -28,7 +19,7 @@ public class AuthenticationRepository {
 
 	 
 	
-	public int save(User user) {
+	public int save(Users user) {
 		    // Set current date for createdDate (LocalDate)
 		    user.setCreatedDate(LocalDate.now());  
 		    
