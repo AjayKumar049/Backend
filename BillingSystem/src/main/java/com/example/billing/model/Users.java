@@ -1,16 +1,16 @@
 package com.example.billing.model;
 import java.time.LocalDate;
 
-public class User {
+public class Users {
     private int id;
     private String userName;
     private String email;
     private String password;
     private LocalDate createdDate; // Using LocalDate instead of java.sql.Date
     
-    public User() {}
+    public Users() {}
 
-    public User(int id, String userName, String email, String password, LocalDate createdDate) {
+    public Users(int id, String userName, String email, String password, LocalDate createdDate) {
         super();
         this.id = id;
         this.userName = userName;
