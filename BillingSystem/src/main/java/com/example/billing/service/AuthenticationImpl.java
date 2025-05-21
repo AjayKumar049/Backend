@@ -14,7 +14,7 @@ import com.example.billing.dto.SignupDto;
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
-import com.example.billing.model.User;
+import com.example.billing.model.Users;
 import com.example.billing.repository.AuthenticationRepository;
 
 @Service
@@ -29,7 +29,7 @@ public class AuthenticationImpl implements AuthenticationService{
 	}
 	
 	@Override
-	public User signUp(User user) {
+	public User signUp(Users user) {
 	    try {
 	        // Validate password first
 	        if (!isValidPassword(user.getPassword())) {
