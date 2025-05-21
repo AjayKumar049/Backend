@@ -11,7 +11,7 @@ import com.example.billing.dto.SignupDto;
 import com.example.billing.exception.BillingSystemAlreadyExist;
 import com.example.billing.exception.BillingSystemInternalException;
 import com.example.billing.exception.BillingSystemNotFoundException;
-import com.example.billing.model.User;
+import com.example.billing.model.Users;
 import com.example.billing.reponse.BillingSystemResponseBuilder;
 import com.example.billing.service.AuthenticationService;
 import com.example.billing.utility.RequestValidationUtil;
@@ -31,7 +31,7 @@ public class AuthenticationController {
 	 
 	// POST Method
 	    @PostMapping("/SignUp")
-	    public ResponseEntity<Object> addUser(@Valid @RequestBody User user, BindingResult result) {
+	    public ResponseEntity<Object> addUser(@Valid @RequestBody Users user, BindingResult result) {
 	        try {
 	            ResponseEntity<Object> validationResponse = validationUtil.validateRequest(result);
 	            if (validationResponse != null) {
