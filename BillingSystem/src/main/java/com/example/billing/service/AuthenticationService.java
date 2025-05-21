@@ -3,13 +3,13 @@ package com.example.billing.service;
 import org.springframework.stereotype.Service;
 
 import com.example.billing.dto.SignupDto;
-import com.example.billing.model.User;
+import com.example.billing.model.Users;
 
 @Service
 public interface AuthenticationService {
-	User signUp(User user);
+	Users signUp(Users user);
 	SignupDto signIn(SignupDto signupDto);
-	//ForgotPasswordDto ForgotPassword(ForgotPasswordDto forgotPasswordDto);
+
 	
 	
 
