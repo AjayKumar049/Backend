@@ -34,18 +34,24 @@ public class ItemRepository {
         item.setDiscount(rs.getDouble("discount"));
         item.setSellingPrice(rs.getDouble("selling_price"));
         item.setExpiryDate(rs.getDate("expiry_date").toLocalDate());
+        item.setMedicineType(rs.getString("medicine_type"));
+        item.setDosage(rs.getString("dosage"));
+
+
         return item;
     };
     
     //Create, Read, Update, Delete, and other operation are mentioned below
     // CREATE
     public int save(Item item) {
-        String sql = "INSERT INTO item (name, manufacturer, hsn_code, stock, gst, tax_status, discount, selling_price, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO item (name, manufacturer, hsn_code, medicine_type, dosage, stock, gst, tax_status, discount, selling_price, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
         try {
             return jdbcTemplate.update(sql,
                     item.getName(),
                     item.getManufacturer(),
                     item.getHsn(),
+                    item.getMedicineType(),
+                    item.getDosage(),
                     item.getStock(),
                     item.getGst(),
                     item.getTax(),
@@ -81,23 +87,24 @@ public class ItemRepository {
         }
     }
 
-    // UPDATE
     public int update(Item item) {
-        String sql = "UPDATE item SET name=?, manufacturer=?, hsn_code=?, stock=?, gst=?, tax_status=?, discount=?, selling_price=?, expiry_date=? WHERE item_id=?";
+        String sql = "UPDATE item SET name=?, manufacturer=?, hsn_code=?, stock=?, medicine_type=?, dosage=?, gst=?, tax_status=?, discount=?, selling_price=?, expiry_date=? WHERE item_id=?";
         try {
             return jdbcTemplate.update(sql,
                     item.getName(),
                     item.getManufacturer(),
                     item.getHsn(),
                     item.getStock(),
+                    item.getMedicineType(),
+                    item.getDosage(),
                     item.getGst(),
                     item.getTax(),
                     item.getDiscount(),
                     item.getSellingPrice(),
-                    item.getExpiryDate(),
+                    java.sql.Date.valueOf(item.getExpiryDate()),
                     item.getItemId());
         } catch (DataAccessException e) {
-        	logger.error("Error updating item", e);
+            logger.error("Error updating item", e);
             return 0;
         }
     }
