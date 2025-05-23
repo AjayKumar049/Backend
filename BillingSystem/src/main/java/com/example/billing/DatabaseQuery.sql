@@ -39,20 +39,14 @@ CREATE TABLE resetpassword (
 -- Customer Table
 CREATE TABLE customer (
     customer_id SERIAL PRIMARY KEY, 
-    type VARCHAR(20) NOT NULL,         -- Business or Individual
+    type VARCHAR(20) Not NULL HECK (type IN ('Individual', 'Business')),  -- Added constraint
     salutation VARCHAR(10),
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50),
     company_name VARCHAR(100),
     email VARCHAR(100) NOT NULL,
     gstin VARCHAR(15),
-    phone VARCHAR(15)
-);
-
--- Address Table
-CREATE TABLE address (
-    address_id SERIAL PRIMARY KEY,
-    customer_id INTEGER NOT NULL REFERENCES customer(customer_id),
+    phone VARCHAR(15),
     attention VARCHAR(100),
     shipping_address TEXT,
     city VARCHAR(50),
@@ -60,6 +54,8 @@ CREATE TABLE address (
     state VARCHAR(50),
     country VARCHAR(50)
 );
+
+    
 
 -- Item Table 
 CREATE TABLE item (
