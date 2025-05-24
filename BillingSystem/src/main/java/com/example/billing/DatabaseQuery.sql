@@ -39,12 +39,12 @@ CREATE TABLE resetpassword (
 -- Customer Table
 CREATE TABLE customer (
     customer_id SERIAL PRIMARY KEY, 
-    type VARCHAR(20) Not NULL CHECK (type IN ('Individual', 'Business')),  -- Added constraint
+    type VARCHAR(20) CHECK (type IN ('Individual', 'Business')),  -- Added constraint
     salutation VARCHAR(10),
-    first_name VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50),
     last_name VARCHAR(50),
     company_name VARCHAR(100),
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
     gstin VARCHAR(15),
     phone VARCHAR(15),
     attention VARCHAR(100),
