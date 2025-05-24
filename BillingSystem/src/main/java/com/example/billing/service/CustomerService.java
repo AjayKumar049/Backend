@@ -12,6 +12,6 @@ public interface CustomerService {
 	List<Customer> getAllCustomers();
 	Customer updateCustomer(Customer customer);
 	Customer deleteCustomer(Customer customer);
-	Customer searchCustomerByName(Customer customer);
+	List<Customer> searchCustomerByName(Customer customer);
 
 }
