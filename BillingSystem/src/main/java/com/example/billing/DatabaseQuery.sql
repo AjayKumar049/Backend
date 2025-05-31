@@ -1,38 +1,36 @@
 -- signup table
 CREATE TABLE signup (
     signup_id SERIAL PRIMARY KEY,
-    username VARCHAR(250),
-    email VARCHAR(250) UNIQUE,
-    password VARCHAR(250),
-    created_date DATE
+    username VARCHAR(250) NOT NULL,
+    email VARCHAR(250) UNIQUE NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    created_date DATE DEFAULT CURRENT_DATE
 );
 
--- signin table (refers to signup.signup_id)
+-- signin table
 CREATE TABLE signin (
     signin_id SERIAL PRIMARY KEY,
-    signup_id INT,
-    email VARCHAR(250),
-    password VARCHAR(250),
-    login_time TIMESTAMP,
-    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
+    signup_id INT NOT NULL,
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id) ON DELETE CASCADE
 );
 
--- forgotpassword table (refers to signup.signup_id)
+-- forgotpassword table
 CREATE TABLE forgotpassword (
     forgotpassword_id SERIAL PRIMARY KEY,
-    signup_id INT,
-    email VARCHAR(250),
-    requested_date TIMESTAMP,
-    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
+    signup_id INT NOT NULL,
+    requested_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id) ON DELETE CASCADE
 );
 
--- resetpassword table (refers to signup.signup_id)
+-- resetpassword table
 CREATE TABLE resetpassword (
     resetpassword_id SERIAL PRIMARY KEY,
-    signup_id INT,
-    token VARCHAR(250) UNIQUE,
-    new_password VARCHAR(250),
-    FOREIGN KEY (signup_id) REFERENCES signup(signup_id)
+    signup_id INT NOT NULL,
+    token VARCHAR(250) UNIQUE NOT NULL,
+    expire_at TIMESTAMP NOT NULL,
+    new_password VARCHAR(250) NOT NULL,
+    FOREIGN KEY (signup_id) REFERENCES signup(signup_id) ON DELETE CASCADE
 );
 
 ##The table queries for Customer, Item, Estimate, and Invoice were mentioned below
